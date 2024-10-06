@@ -14,7 +14,7 @@ const UserHome = () => {
 
   return (
     <Router>
-      <AppRoutes saveData={saveData} />
+      <AppRoutes saveData={saveData} alldata={userData} />
       {console.log(userData)}
       {/* Display Collected Data
       <div>

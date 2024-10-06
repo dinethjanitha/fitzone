@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import './workoutScheduler.css'
+import { useNavigate } from 'react-router-dom'
 
 const WorkoutScheduler = ({ saveData }) => {
   const [selectedDays, setSelectedDays] = useState([])
   const [workoutDuration, setWorkoutDuration] = useState('')
   const [workoutTime, setWorkoutTime] = useState('')
+  const navigate = useNavigate()
 
   const daysOfWeek = [
     { name: 'Monday', icon: '🏋️‍♂️' },
@@ -29,10 +31,11 @@ const WorkoutScheduler = ({ saveData }) => {
     // You can handle form submission logic here
 
     saveData({ workouttime: workoutTime })
-    saveData({ workfordays: selectedDays })
-    saveData({ workoutDuration: workoutDuration })
+    saveData({ workoutdays: selectedDays })
+    saveData({ workoutduration: workoutDuration })
 
     console.log({ workoutDuration, selectedDays, workoutTime })
+    navigate('/ms')
   }
 
   return (

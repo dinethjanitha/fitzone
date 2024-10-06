@@ -6,5 +6,7 @@ export const isTokenValid = () => {
   const exp = payload.exp
   const now = Date.now() / 1000
 
+  console.log('payload is: ', payload.id)
+
   return exp > now
 }
