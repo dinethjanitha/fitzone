@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Select from 'react-select'
-import './ScheduleForm.css' // Your CSS file for styling
 
 const ScheduleForm = () => {
   // States for form fields
@@ -88,51 +87,61 @@ const ScheduleForm = () => {
   }
 
   return (
-    <div className="schedule-form-container">
-      <h2>Add New Schedule</h2>
-      <form onSubmit={handleSubmit} className="schedule-form">
+    <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+      <h1 className="text-2xl font-bold mb-6 text-center">Add New Schedule</h1>
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div className="form-group">
-          <label>Schedule Name:</label>
+          <label className="block text-lg font-medium mb-2">
+            Schedule Name:
+          </label>
           <input
             type="text"
             value={scheduleName}
             onChange={(e) => setScheduleName(e.target.value)}
             placeholder="Enter schedule name"
             required
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <div className="form-group">
-          <label>Description:</label>
+          <label className="block text-lg font-medium mb-2">Description:</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Enter description"
             rows="3"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <div className="form-group">
-          <label>Select Exercises:</label>
+          <label className="block text-lg font-medium mb-2">
+            Select Exercises:
+          </label>
           <Select
             isMulti
             options={exercises}
             value={selectedExercises}
             onChange={handleExerciseChange}
             placeholder="Search and select exercises..."
+            className="react-select-container"
           />
         </div>
 
         {selectedExercises.length > 0 && (
-          <div className="exercise-details">
-            <h3>Exercise Sets and Reps</h3>
+          <div className="exercise-details space-y-4">
+            <h3 className="text-lg font-semibold mb-4">
+              Exercise Sets and Reps
+            </h3>
             {selectedExercises.map((exercise, index) => (
-              <div key={exercise.value} className="exercise-detail-item">
-                <p>
-                  <strong>{exercise.label}</strong>
-                </p>
-                <label>
-                  Sets:
+              <div
+                key={exercise.value}
+                className="exercise-detail-item space-y-2"
+              >
+                <p className="font-semibold">{exercise.label}</p>
+                <label className="block">
+                  <span className="text-sm mr-2">Sets:</span>
                   <input
                     type="number"
                     value={exerciseDetails[index]?.sets}
@@ -141,10 +150,11 @@ const ScheduleForm = () => {
                     }
                     min="1"
                     required
+                    className="mt-1 w-24 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </label>
-                <label>
-                  Reps:
+                <label className="block">
+                  <span className="text-sm mr-2">Reps:</span>
                   <input
                     type="number"
                     value={exerciseDetails[index]?.reps}
@@ -153,6 +163,7 @@ const ScheduleForm = () => {
                     }
                     min="1"
                     required
+                    className="mt-1 w-24 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </label>
               </div>
@@ -161,21 +172,29 @@ const ScheduleForm = () => {
         )}
 
         <div className="form-group">
-          <label>How to Do:</label>
+          <label className="block text-lg font-medium mb-2">How to Do:</label>
           <textarea
             value={howToDo}
             onChange={(e) => setHowToDo(e.target.value)}
             placeholder="Explain how to do the exercises"
             rows="4"
+            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
-        <button type="submit" className="submit-btn">
+        <button
+          type="submit"
+          className="w-full py-3 px-6 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
           Add Schedule
         </button>
       </form>
 
-      {message && <div className="message">{message}</div>}
+      {message && (
+        <div className="mt-6 text-center text-green-600 font-semibold">
+          {message}
+        </div>
+      )}
     </div>
   )
 }

@@ -52,6 +52,80 @@ const UserDetailsSummary = ({ alldata }) => {
           setSuccessMessage('Data submitted successfully!')
           setShowMessage(false) // Close the confirmation modal
 
+          try {
+            const userid = {
+              userid: alldata.userid,
+              currentweight: alldata.currentweight,
+              currentbodytype: alldata.currentbodytype,
+              goalbodytype: alldata.goalbodytype,
+              muscleGoal: alldata.muscleGoal,
+              age: alldata.age,
+            }
+            const usersch = JSON.stringify(userid)
+            axios
+              .post('http://127.0.0.1:3000/api/v1/workout', usersch, {
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${jwtToken}`,
+                },
+              })
+              .then((response) => {
+                console.log('success')
+                axios
+                  .patch(
+                    `http://127.0.0.1:3000/api/v1/user/${alldata.userid}`,
+                    usersch,
+                    {
+                      headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${jwtToken}`,
+                      },
+                    }
+                  )
+                  .then((response) => {
+                    console.log('first login is modified!', response)
+                  })
+                  .catch((err) => {
+                    console.log('first login modified error: ', err)
+                  })
+              })
+              .catch((err) => {
+                setSuccessMessage(
+                  `Data not added!: Status: ${err.response.data.status}`
+                )
+              })
+
+            const userdietdata = {
+              userid: alldata.userid,
+              currentweight: alldata.currentweight,
+              goalweight: alldata.goalweight,
+              diet: alldata.diet,
+              allergicfoods: alldata.allergicfoods,
+              age: alldata.age,
+            }
+
+            axios
+              .post(
+                'http://127.0.0.1:3000/api/v1/dietplan/userdiet',
+                userdietdata,
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${jwtToken}`,
+                  },
+                }
+              )
+              .then((response) => {
+                console.log('Diet plan assign done')
+              })
+              .catch((err) => {
+                console.log('diet plan assign not success')
+                console.log(err.message)
+              })
+          } catch (error) {
+            console.log(error)
+          }
+
           // setTimeout(() => {
           //   navigate('/home')
           // }, 3000)

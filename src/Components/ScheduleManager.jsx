@@ -7,9 +7,10 @@ const ScheduleManager = () => {
   const [exercises, setExercises] = useState([])
   const [editingSchedule, setEditingSchedule] = useState(null) // For editing
   const [selectedExercises, setSelectedExercises] = useState([]) // For exercises in dropdown
+  const [exerciseDetails, setExerciseDetails] = useState([]) // For sets/reps during editing
   const [message, setMessage] = useState('')
 
-  // Fetch all schedules when the component loads
+  // Fetch schedules and exercises when the component loads
   useEffect(() => {
     fetchSchedules()
     fetchExercises()
@@ -42,11 +43,48 @@ const ScheduleManager = () => {
   // Handle the Edit button click and open the modal with the schedule data pre-filled
   const handleEdit = (schedule) => {
     setEditingSchedule(schedule)
-    const selected = schedule.exerciseid.map((id) => {
-      const exercise = exercises.find((ex) => ex.value === id)
-      return { value: exercise?.value, label: exercise?.label }
-    })
+    const selected = schedule.exercises
+      .map((ex) => {
+        const exercise = exercises.find((opt) => opt.value === ex.exerciseid)
+        return { value: exercise?.value, label: exercise?.label }
+      })
+      .filter((exercise) => exercise !== null) // filter out nulls
+
+    const details = schedule.exercises.map((ex) => ({
+      exerciseid: ex.exerciseid,
+      sets: ex.sets,
+      reps: ex.reps,
+    }))
+
     setSelectedExercises(selected)
+    setExerciseDetails(details)
+  }
+
+  // Handle saving the edited schedule
+  const handleSave = async () => {
+    const updatedSchedule = {
+      ScheduleName: editingSchedule.ScheduleName,
+      description: editingSchedule.description,
+      exercises: exerciseDetails.map((exercise) => ({
+        exerciseid: exercise.exerciseid,
+        sets: exercise.sets,
+        reps: exercise.reps,
+      })),
+      howtodo: editingSchedule.howtodo,
+    }
+
+    try {
+      await axios.patch(
+        `http://127.0.0.1:3000/api/v1/schedule/${editingSchedule._id}`,
+        updatedSchedule
+      )
+      setMessage('Schedule updated successfully!')
+      setEditingSchedule(null) // Close the modal
+      fetchSchedules() // Refresh schedules
+    } catch (error) {
+      console.error('Error updating schedule:', error)
+      setMessage('Error updating schedule. Please try again.')
+    }
   }
 
   // Handle the delete operation
@@ -65,27 +103,10 @@ const ScheduleManager = () => {
     }
   }
 
-  // Handle saving the edited schedule
-  const handleSave = async () => {
-    const updatedSchedule = {
-      ScheduleName: editingSchedule.ScheduleName,
-      description: editingSchedule.description,
-      exerciseid: selectedExercises.map((ex) => ex.value),
-      howtodo: editingSchedule.howtodo,
-    }
-
-    try {
-      await axios.patch(
-        `http://127.0.0.1:3000/api/v1/schedule/${editingSchedule._id}`,
-        updatedSchedule
-      )
-      setMessage('Schedule updated successfully!')
-      setEditingSchedule(null) // Close the modal
-      fetchSchedules() // Refresh schedules
-    } catch (error) {
-      console.error('Error updating schedule:', error)
-      setMessage('Error updating schedule. Please try again.')
-    }
+  const handleSetsRepsChange = (index, field, value) => {
+    const updatedExerciseDetails = [...exerciseDetails]
+    updatedExerciseDetails[index][field] = value
+    setExerciseDetails(updatedExerciseDetails)
   }
 
   return (
@@ -116,8 +137,13 @@ const ScheduleManager = () => {
                 <td className="py-3 px-6 text-left">{schedule.ScheduleName}</td>
                 <td className="py-3 px-6 text-left">{schedule.description}</td>
                 <td className="py-3 px-6 text-left">
-                  {schedule.exerciseid
-                    .map((id) => exercises.find((ex) => ex.value === id)?.label)
+                  {schedule.exercises
+                    .map(
+                      (ex) =>
+                        exercises.find((opt) => opt.value === ex.exerciseid)
+                          ?.label
+                    )
+                    .filter((label) => label)
                     .join(', ')}
                 </td>
                 <td className="py-3 px-6 text-center">
@@ -182,18 +208,44 @@ const ScheduleManager = () => {
                 onChange={setSelectedExercises}
               />
             </div>
-            <div className="form-group mb-4">
-              <label className="block font-semibold mb-2">How to Do:</label>
-              <textarea
-                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={editingSchedule.howtodo}
-                onChange={(e) =>
-                  setEditingSchedule({
-                    ...editingSchedule,
-                    howtodo: e.target.value,
-                  })
-                }
-              />
+            <div className="exercise-details space-y-4">
+              <h3 className="text-lg font-semibold mb-4">
+                Exercise Sets and Reps
+              </h3>
+              {selectedExercises.map((exercise, index) => (
+                <div
+                  key={exercise.value}
+                  className="exercise-detail-item space-y-2"
+                >
+                  <p className="font-semibold">{exercise.label}</p>
+                  <label className="block">
+                    <span className="text-sm mr-2">Sets:</span>
+                    <input
+                      type="number"
+                      value={exerciseDetails[index]?.sets}
+                      onChange={(e) =>
+                        handleSetsRepsChange(index, 'sets', e.target.value)
+                      }
+                      min="1"
+                      required
+                      className="mt-1 w-24 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="text-sm mr-2">Reps:</span>
+                    <input
+                      type="number"
+                      value={exerciseDetails[index]?.reps}
+                      onChange={(e) =>
+                        handleSetsRepsChange(index, 'reps', e.target.value)
+                      }
+                      min="1"
+                      required
+                      className="mt-1 w-24 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </label>
+                </div>
+              ))}
             </div>
             <div className="flex justify-end">
               <button

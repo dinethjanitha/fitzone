@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import image from '../assets/close.png'
+import slim from '../assets/smlim.jpg'
+import fat from '../assets/fat.jpg'
+import avarage from '../assets/avarage.webp'
+import hevey from '../assets/heavey.jpeg'
+import fit from '../assets/fit.jpeg'
 
 const BodyCatagory = ({ saveData }) => {
   const [bodyCatagory, setBodyCategory] = useState('')
@@ -21,6 +26,9 @@ const BodyCatagory = ({ saveData }) => {
     } else if (goalBodyCatagory === '') {
       setShowError(true)
       setErrorMessage('Please Select Goal Body Type')
+    } else if (bodyCatagory === goalBodyCatagory) {
+      setShowError(true)
+      setErrorMessage('Please Select different body Type')
     } else {
       navigate('/al')
     }
@@ -48,19 +56,17 @@ const BodyCatagory = ({ saveData }) => {
       <div className="mx-auto p-4">
         <div>
           <h2 className="text-2xl font-semibold mb-4 text-center text-gray-800">
-            Body Types
+            Current Body Shape
           </h2>
           <section className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div
               className={`p-4 bg-white rounded-lg shadow-md cursor-pointer transition-transform transform ${
-                bodyCatagory === 'Very Heavy'
-                  ? 'ring-2 ring-indigo-500 scale-105'
-                  : ''
+                bodyCatagory === 'fat' ? 'ring-2 ring-indigo-500 scale-105' : ''
               }`}
-              onClick={() => setBodyCategory('Very Heavy')}
+              onClick={() => setBodyCategory('fat')}
             >
               <img
-                src="https://wallpaperset.com/w/full/c/1/4/459707.jpg"
+                src={fat}
                 alt="Very Heavy Body Type"
                 className="w-full h-48 object-cover rounded-lg"
               />
@@ -71,14 +77,14 @@ const BodyCatagory = ({ saveData }) => {
 
             <div
               className={`p-4 bg-white rounded-lg shadow-md cursor-pointer transition-transform transform ${
-                bodyCatagory === 'Heavy'
+                bodyCatagory === 'heavy'
                   ? 'ring-2 ring-indigo-500 scale-105'
                   : ''
               }`}
-              onClick={() => setBodyCategory('Heavy')}
+              onClick={() => setBodyCategory('heavy')}
             >
               <img
-                src="https://via.placeholder.com/200"
+                src={hevey}
                 alt="Heavy Body Type"
                 className="w-full h-48 object-cover rounded-lg"
               />
@@ -96,7 +102,7 @@ const BodyCatagory = ({ saveData }) => {
               onClick={() => setBodyCategory('Average')}
             >
               <img
-                src="https://via.placeholder.com/200"
+                src={avarage}
                 alt="Average Body Type"
                 className="w-full h-48 object-cover rounded-lg"
               />
@@ -107,19 +113,19 @@ const BodyCatagory = ({ saveData }) => {
 
             <div
               className={`p-4 bg-white rounded-lg shadow-md cursor-pointer transition-transform transform ${
-                bodyCatagory === 'Slim'
+                bodyCatagory === 'skinny'
                   ? 'ring-2 ring-indigo-500 scale-105'
                   : ''
               }`}
-              onClick={() => setBodyCategory('Slim')}
+              onClick={() => setBodyCategory('skinny')}
             >
               <img
-                src="https://via.placeholder.com/200"
+                src={slim}
                 alt="Slim Body Type"
                 className="w-full h-48 object-cover rounded-lg"
               />
               <div className="text-center mt-2 text-gray-700">
-                Slim Body Type
+                Skinny Body Type
               </div>
             </div>
           </section>
@@ -132,14 +138,14 @@ const BodyCatagory = ({ saveData }) => {
           <section className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div
               className={`p-4 bg-white rounded-lg shadow-md cursor-pointer transition-transform transform ${
-                goalBodyCatagory === 'Heavy'
+                goalBodyCatagory === 'heavy'
                   ? 'ring-2 ring-indigo-500 scale-105'
                   : ''
               }`}
-              onClick={() => setGoalBodyCategory('Heavy')}
+              onClick={() => setGoalBodyCategory('heavy')}
             >
               <img
-                src="https://via.placeholder.com/200"
+                src={hevey}
                 alt="Heavy Body Type"
                 className="w-full h-48 object-cover rounded-lg"
               />
@@ -157,7 +163,7 @@ const BodyCatagory = ({ saveData }) => {
               onClick={() => setGoalBodyCategory('Average')}
             >
               <img
-                src="https://via.placeholder.com/200"
+                src={avarage}
                 alt="Average Body Type"
                 className="w-full h-48 object-cover rounded-lg"
               />
@@ -168,19 +174,19 @@ const BodyCatagory = ({ saveData }) => {
 
             <div
               className={`p-4 bg-white rounded-lg shadow-md cursor-pointer transition-transform transform ${
-                goalBodyCatagory === 'Slim'
+                goalBodyCatagory === 'fit'
                   ? 'ring-2 ring-indigo-500 scale-105'
                   : ''
               }`}
-              onClick={() => setGoalBodyCategory('Slim')}
+              onClick={() => setGoalBodyCategory('fit')}
             >
               <img
-                src="https://via.placeholder.com/200"
-                alt="Slim Body Type"
+                src={fit}
+                alt="fit Body Type"
                 className="w-full h-48 object-cover rounded-lg"
               />
               <div className="text-center mt-2 text-gray-700">
-                Slim Body Type
+                Fit Body Type
               </div>
             </div>
           </section>

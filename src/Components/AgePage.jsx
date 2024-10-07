@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import body from '../assets/body.webp'
+import young from '../assets/young.png'
+import man from '../assets/man.png'
+import mansmall from '../assets/mansmall.png'
+import adult from '../assets/adult.png'
 
 const AgePage = ({ saveData }) => {
   const attachUserID = () => {
@@ -40,7 +44,7 @@ const AgePage = ({ saveData }) => {
         >
           <div className="flex justify-center">
             <img
-              src={body}
+              src={young}
               alt="AGE 18-29"
               className="w-full h-48 object-cover rounded-lg"
             />
@@ -57,7 +61,7 @@ const AgePage = ({ saveData }) => {
         >
           <div className="flex justify-center">
             <img
-              src="https://thumbs.dreamstime.com/b/little-boy-playing-building-blocks-22184576.jpg"
+              src={mansmall}
               alt="AGE 30-39"
               className="w-full h-48 object-cover rounded-lg"
             />
@@ -74,7 +78,7 @@ const AgePage = ({ saveData }) => {
         >
           <div className="flex justify-center">
             <img
-              src="https://wallpaperset.com/w/full/c/1/4/459707.jpg"
+              src={man}
               alt="AGE 40-49"
               className="w-full h-48 object-cover rounded-lg"
             />
@@ -91,7 +95,7 @@ const AgePage = ({ saveData }) => {
         >
           <div className="flex justify-center">
             <img
-              src="https://images.pexels.com/photos/3939167/pexels-photo-3939167.jpeg?cs=srgb&dl=pexels-victoria-borodinova-3939167.jpg&fm=jpg"
+              src={adult}
               alt="AGE 50+"
               className="w-full h-48 object-cover rounded-lg"
             />
