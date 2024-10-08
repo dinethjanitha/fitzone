@@ -56,7 +56,7 @@ const UserProfile = () => {
           email: response.data.message.data.email,
         })
       } catch (err) {
-        setError(err.response?.data?.message || err.message) // Set error message if the fetch fails
+        setError(err.response?.data?.message || err) // Set error message if the fetch fails
       } finally {
         setLoading(false) // Set loading to false after fetching
       }

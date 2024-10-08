@@ -28,15 +28,50 @@ import Dashboard from '../Components/Dashbord'
 import SignUp from '../Components/SignUp'
 import Navbar from '../NavBar'
 import MotivationPage from '../Components/MotivationPage'
+import UserManagement from '../Components/UserManagement'
+import AdminDashboard from '../Components/AdminDashboard'
+
 const AppRoutes = ({ saveData, alldata }) => {
   const navigate = useNavigate()
   const location = useLocation() // Use useLocation to get current path
 
+  const token = localStorage.getItem('token') // Retrieve JWT from local storage
+
+  const getUserTypeFromJWT = () => {
+    if (!token) return null // Return null if token doesn't exist
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]))
+      return payload.userType // Assuming 'id' is the key in your JWT payload
+    } catch (e) {
+      console.error('Error decoding JWT:', e)
+      return null // Return null if there's an error in decoding
+    }
+  }
+
   useEffect(() => {
     const publicPaths = ['/signin', '/signup']
+    const user = isTokenValid() // Get the user data including userType
+    const userType = getUserTypeFromJWT()
+    console.log('Log is: ', user.userType)
+
     // If the token is invalid and user tries to access a private route, redirect to /signin
-    if (!isTokenValid() && !publicPaths.includes(location.pathname)) {
+    if (!user && !publicPaths.includes(location.pathname)) {
       navigate('/signin')
+    } else if (
+      user &&
+      userType !== 'Admin' &&
+      [
+        '/ex',
+        '/dietplan',
+        '/usermanagement',
+        '/xx',
+        '/el',
+        '/sx',
+        'admin',
+      ].includes(location.pathname)
+    ) {
+      // If user is not admin and tries to access admin routes, redirect to home or any other route
+      navigate('/dashboard') // Or wherever you want to redirect non-admin users
     }
   }, [navigate, location])
 
@@ -51,6 +86,21 @@ const AppRoutes = ({ saveData, alldata }) => {
         <Route path="/weight" element={<WeightPage saveData={saveData} />} />
         <Route path="/signin" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/usertracking" element={<UserTracking />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />} />
+
+        {/* Admin routes */}
+        <Route path="/admin" element={<AdminDashboard />}>
+          <Route path="ex" element={<ExerciseForm />} />
+          <Route path="dietplan" element={<DietPlanForm />} />
+          <Route path="usermanagement" element={<UserManagement />} />
+          <Route path="xx" element={<ScheduleForm />} />
+          <Route path="el" element={<ExerciseList />} />
+          <Route path="sx" element={<ScheduleManager />} />
+        </Route>
+
+        {/* Other routes */}
         <Route path="/tr" element={<TargetZones saveData={saveData} />} />
         <Route
           path="/yp"
@@ -59,28 +109,11 @@ const AppRoutes = ({ saveData, alldata }) => {
         <Route path="/yx" element={<YourExperience saveData={saveData} />} />
         <Route path="/yd" element={<YourDiet saveData={saveData} />} />
         <Route path="/ms" element={<MuscleGoal saveData={saveData} />} />
-        <Route path="/ex" element={<ExerciseForm />} />
-        <Route path="/el" element={<ExerciseList />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/usertracking" element={<UserTracking />} />
-        <Route path="/dietplan" element={<DietPlanForm />} />
         <Route path="/diet" element={<DietDisplay />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/xx" element={<ScheduleForm />} />
-        <Route path="/us" element={<UserSchedule />} />
-        <Route path="/sx" element={<ScheduleManager />} />
-        <Route path="/sm" element={<UserDetailsSummary alldata={alldata} />} />
-        <Route path="/profile" element={<UserProfile />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/m" element={<MotivationPage />} />
-        <Route
-          path="/workout"
-          element={<WorkoutScheduler saveData={saveData} />}
-        />
-        <Route path="/al" element={<AllergicFoods saveData={saveData} />} />
-        <Route
-          path="/bodycatagory"
-          element={<BodyCatagory saveData={saveData} />}
-        />
+        <Route path="/us" element={<UserSchedule />} />
+        {/* Add more routes as needed */}
       </Routes>
     </>
   )

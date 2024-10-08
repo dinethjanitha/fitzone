@@ -58,7 +58,7 @@ const DietPlanForm = () => {
   }
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg">
+    <div className="max-w-md mx-auto p-6  rounded-lg">
       <h1 className="text-2xl font-bold mb-4">Create Diet Plan</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">

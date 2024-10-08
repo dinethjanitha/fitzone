@@ -87,7 +87,7 @@ const ScheduleForm = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+    <div className="max-w-2xl mx-auto mt-10 p-6 rounded-lg">
       <h1 className="text-2xl font-bold mb-6 text-center">Add New Schedule</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="form-group">
