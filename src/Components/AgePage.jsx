@@ -33,7 +33,7 @@ const AgePage = ({ saveData }) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <h2 className="text-4xl font-bold mb-8 text-center text-gray-800">
-        What's your current and target weight?
+        What's your age range?
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-4 md:px-0">

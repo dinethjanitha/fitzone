@@ -15,7 +15,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const UserTracking = () => {
   const [trackingData, setTrackingData] = useState([])
-  const [exercises, setExercises] = useState({}) // Store fetched exercises with their IDs as keys
+  const [exercises, setExercises] = useState({})
   const [message, setMessage] = useState('')
 
   const jwtToken = localStorage.getItem('token')
@@ -52,7 +52,7 @@ const UserTracking = () => {
       const exerciseResponses = await Promise.all(exercisePromises)
       const exercisesData = exerciseResponses.reduce((acc, response) => {
         const exercise = response.data.data.exercise
-        acc[exercise._id] = exercise // Use exercise ID as the key
+        acc[exercise._id] = exercise
         return acc
       }, {})
 
@@ -67,16 +67,14 @@ const UserTracking = () => {
   }, [])
 
   useEffect(() => {
-    // Fetch exercises when tracking data changes
     if (trackingData.length > 0) {
       const exerciseIds = [
         ...new Set(trackingData.map((item) => item.exerciseid)),
-      ] // Unique exercise IDs
+      ]
       fetchExercises(exerciseIds)
     }
   }, [trackingData])
 
-  // Function to calculate tracking data for the last 7 days
   const getLast7DaysData = () => {
     const today = new Date()
     const last7Days = Array.from({ length: 7 }, (_, i) => {

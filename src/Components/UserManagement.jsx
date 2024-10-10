@@ -110,7 +110,15 @@ const UserManagement = () => {
                   </button>
                   <button
                     className="bg-red-500 text-white px-2 py-1 rounded ml-2"
-                    onClick={() => handleDelete(user._id)}
+                    onClick={() => {
+                      // Show confirmation dialog
+                      const isConfirmed = window.confirm(
+                        'Are you sure you want to delete this user?'
+                      )
+                      if (isConfirmed) {
+                        handleDelete(user._id) // Call the delete function if confirmed
+                      }
+                    }}
                   >
                     Delete
                   </button>

@@ -89,8 +89,27 @@ const SignUp = () => {
           navigate('/signin')
         }, 2000)
       } catch (err) {
-        setError(err.response?.data?.message || 'Error creating user')
-        setDialogMessage(error)
+        // Handle error response properly
+        let errorMessage = 'Error creating user'
+
+        // Check if error response is an object and has data
+        if (err.response?.data) {
+          if (typeof err.response.data.message === 'string') {
+            errorMessage = err.response.data.message
+          } else if (typeof err.response.data.message === 'object') {
+            // If it's an object, you can handle it accordingly
+            // You can stringify the object or extract relevant keys
+            errorMessage = JSON.stringify(err.response.data.message)
+          }
+        }
+
+        try {
+          if (err.response.data.message.keyValue.email === formData.email) {
+            errorMessage = 'Email Already Exit!'
+          }
+        } catch (error) {}
+        setError(errorMessage)
+        setDialogMessage(errorMessage)
         setShowDialog(true)
       } finally {
         setLoading(false)

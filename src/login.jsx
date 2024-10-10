@@ -98,6 +98,13 @@ const Login = () => {
           >
             {successMessage ? 'Redirecting...' : 'Login'}
           </button>
+          <button
+            type="button"
+            onClick={() => navigate('/signup')}
+            className="w-full mt-4 bg-white text-black py-2 px-4 rounded-md font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            Are you new for here? Sign Up Now
+          </button>
         </form>
 
         {/* Error Message */}

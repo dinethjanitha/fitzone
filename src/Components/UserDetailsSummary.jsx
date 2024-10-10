@@ -47,10 +47,10 @@ const UserDetailsSummary = ({ alldata }) => {
       })
       .then((response) => {
         console.log(response)
-        // Set the success message based on the response
+
         if (response.status === 201) {
           setSuccessMessage('Data submitted successfully!')
-          setShowMessage(false) // Close the confirmation modal
+          setShowMessage(false)
 
           try {
             const userid = {
@@ -84,6 +84,7 @@ const UserDetailsSummary = ({ alldata }) => {
                   )
                   .then((response) => {
                     console.log('first login is modified!', response)
+                    navigate('/dashboard')
                   })
                   .catch((err) => {
                     console.log('first login modified error: ', err)
@@ -263,6 +264,12 @@ const UserDetailsSummary = ({ alldata }) => {
         )}
       </div>
     )
+
+    // try{
+
+    // }catch(){
+    //   return <h2>Error While Fetci</h2>
+    // }
   }
 }
 

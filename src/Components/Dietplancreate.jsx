@@ -5,7 +5,7 @@ import Select from 'react-select'
 const DietPlanForm = () => {
   const [planName, setPlanName] = useState('')
   const [selectedFoods, setSelectedFoods] = useState([])
-  const [instructions, setInstructions] = useState('')
+  const [foodInstructions, setFoodInstructions] = useState({})
   const [message, setMessage] = useState('')
 
   // Common food options
@@ -31,12 +31,21 @@ const DietPlanForm = () => {
     setSelectedFoods(selectedOptions)
   }
 
+  const handleInstructionChange = (food, instruction) => {
+    setFoodInstructions((prevInstructions) => ({
+      ...prevInstructions,
+      [food]: instruction,
+    }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     const dietPlanData = {
       planName,
-      foods: selectedFoods.map((food) => food.value), // Get only the values of selected foods
-      instructions,
+      foods: selectedFoods.map((food) => ({
+        foodName: food.value,
+        instructions: foodInstructions[food.value] || '',
+      })),
     }
 
     try {
@@ -49,7 +58,7 @@ const DietPlanForm = () => {
         // Clear form fields after success
         setPlanName('')
         setSelectedFoods([])
-        setInstructions('')
+        setFoodInstructions({})
       }
     } catch (error) {
       console.error('Error adding diet plan:', error)
@@ -58,7 +67,7 @@ const DietPlanForm = () => {
   }
 
   return (
-    <div className="max-w-md mx-auto p-6  rounded-lg">
+    <div className="max-w-md mx-auto p-6 rounded-lg">
       <h1 className="text-2xl font-bold mb-4">Create Diet Plan</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
@@ -87,18 +96,22 @@ const DietPlanForm = () => {
           />
         </div>
 
-        <div className="mb-4">
-          <label className="block text-lg font-medium mb-2">
-            Instructions:
-          </label>
-          <textarea
-            value={instructions}
-            onChange={(e) => setInstructions(e.target.value)}
-            placeholder="Enter instructions for the diet plan"
-            rows="4"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+        {selectedFoods.map((food) => (
+          <div key={food.value} className="mb-4">
+            <label className="block text-lg font-medium mb-2">
+              Instructions for {food.label}:
+            </label>
+            <textarea
+              value={foodInstructions[food.value] || ''}
+              onChange={(e) =>
+                handleInstructionChange(food.value, e.target.value)
+              }
+              placeholder={`Enter instructions for ${food.label}`}
+              rows="2"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        ))}
 
         <button
           type="submit"

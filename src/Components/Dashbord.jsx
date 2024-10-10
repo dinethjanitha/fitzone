@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Line, Bar } from 'react-chartjs-2'
+import axios from 'axios'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -25,19 +26,123 @@ ChartJS.register(
 )
 
 const Dashboard = () => {
-  // Weight Progress Data
+  const [trackingData, setTrackingData] = useState([])
+  const [exercises, setExercises] = useState({})
+  const [message, setMessage] = useState('')
+  const jwtToken = localStorage.getItem('token')
+
+  const getUserIdFromJWT = () => {
+    const payload = JSON.parse(atob(jwtToken.split('.')[1]))
+    return payload.id
+  }
+
+  const fetchTrackingData = async () => {
+    const userId = getUserIdFromJWT()
+    try {
+      const response = await axios.get(
+        `http://127.0.0.1:3000/api/v1/tracking/${userId}`,
+        {
+          headers: { Authorization: `Bearer ${jwtToken}` },
+        }
+      )
+      setTrackingData(response.data.data.tracking)
+    } catch (error) {
+      setMessage('Error fetching tracking data.')
+      console.error(error)
+    }
+  }
+
+  const fetchExercises = async (exerciseIds) => {
+    try {
+      const exercisePromises = exerciseIds.map((id) =>
+        axios.get(`http://127.0.0.1:3000/api/v1/exerc/${id}`, {
+          headers: { Authorization: `Bearer ${jwtToken}` },
+        })
+      )
+
+      const exerciseResponses = await Promise.all(exercisePromises)
+      const exercisesData = exerciseResponses.reduce((acc, response) => {
+        const exercise = response.data.data.exercise
+        acc[exercise._id] = exercise
+        return acc
+      }, {})
+
+      setExercises(exercisesData)
+    } catch (error) {
+      console.error('Error fetching exercises:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchTrackingData()
+  }, [])
+
+  useEffect(() => {
+    if (trackingData.length > 0) {
+      const exerciseIds = [
+        ...new Set(trackingData.map((item) => item.exerciseid)),
+      ]
+      fetchExercises(exerciseIds)
+    }
+  }, [trackingData])
+
   const weightProgressData = {
-    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'], // Example weeks
+    labels: trackingData.map((item) => item.week),
     datasets: [
       {
         label: 'Weight (kg)',
-        data: [70, 69, 68, 67], // Example data, can be dynamically fetched
+        data: trackingData.map((item) => item.weight),
         borderColor: 'rgba(75, 192, 192, 1)',
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
         fill: true,
         tension: 0.4,
       },
     ],
+  }
+
+  // Prepare workout progress data
+  const getLast7DaysData = () => {
+    const today = new Date()
+    const last7Days = Array.from({ length: 7 }, (_, i) => {
+      const date = new Date(today)
+      date.setDate(today.getDate() - i)
+      return date.toLocaleDateString()
+    })
+
+    const completedCounts = {}
+    last7Days.forEach((day) => {
+      completedCounts[day] = {}
+      Object.keys(exercises).forEach((exerciseId) => {
+        completedCounts[day][exerciseId] = 0
+      })
+    })
+
+    trackingData.forEach((item) => {
+      const completedDate = new Date(item.completedAt).toLocaleDateString()
+      if (completedCounts.hasOwnProperty(completedDate)) {
+        completedCounts[completedDate][item.exerciseid] += 1
+      }
+    })
+
+    return {
+      labels: last7Days,
+      data: Object.keys(exercises).map((exerciseId) => ({
+        exerciseId: exerciseId,
+        counts: last7Days.map((day) => completedCounts[day][exerciseId]),
+      })),
+    }
+  }
+
+  const { labels, data } = getLast7DaysData()
+
+  const workoutProgressData = {
+    labels: labels,
+    datasets: data.map((exerciseData) => ({
+      label:
+        exercises[exerciseData.exerciseId]?.exseciseName || 'Unknown Exercise',
+      data: exerciseData.counts,
+      backgroundColor: 'rgba(54, 162, 235, 0.6)',
+    })),
   }
 
   const weightOptions = {
@@ -55,20 +160,6 @@ const Dashboard = () => {
     },
   }
 
-  // Workout Progress Data (Bar Chart)
-  const workoutProgressData = {
-    labels: ['Push-Ups', 'Squats', 'Burpees', 'Lunges'], // Example exercises
-    datasets: [
-      {
-        label: 'Completed Reps',
-        data: [50, 60, 40, 30], // Example data, can be dynamically fetched
-        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
-      },
-    ],
-  }
-
   const workoutOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -79,14 +170,13 @@ const Dashboard = () => {
       },
       title: {
         display: true,
-        text: 'Workout Reps Completed',
+        text: 'Workout Reps Completed Over the Last 7 Days',
       },
     },
   }
 
   return (
     <div className="flex">
-      {/* Sidebar */}
       <aside className="w-64 h-screen bg-gray-800 text-white">
         <div className="p-4 text-center">
           <h2 className="text-2xl font-bold">Fit Zone</h2>
@@ -121,16 +211,17 @@ const Dashboard = () => {
         </nav>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 p-6 bg-gray-100">
         <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
 
-        {/* User Overview Section */}
+        {message && <div className="mb-4 text-red-600">{message}</div>}
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div className="bg-white shadow-md rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-2">User Overview</h2>
             <p className="text-lg">
-              Current Weight: <span className="font-normal">70 kg</span>
+              Current Weight:{' '}
+              <span className="font-normal">{trackingData[0]?.weight} kg</span>{' '}
             </p>
             <p className="text-lg">
               Goal Weight: <span className="font-normal">65 kg</span>
@@ -141,26 +232,6 @@ const Dashboard = () => {
             </p>
           </div>
 
-          {/* Weight Progress Chart */}
-          <div className="bg-white shadow-md rounded-lg p-6">
-            <h2 className="text-xl font-semibold mb-2">Weight Progress</h2>
-            <div className="h-48">
-              <Line data={weightProgressData} options={weightOptions} />
-            </div>
-          </div>
-        </div>
-
-        {/* Workout Progress and Diet Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          {/* Workout Progress Chart */}
-          <div className="bg-white shadow-md rounded-lg p-6">
-            <h2 className="text-xl font-semibold mb-2">Workout Progress</h2>
-            <div className="h-48">
-              <Bar data={workoutProgressData} options={workoutOptions} />
-            </div>
-          </div>
-
-          {/* Diet Overview Section */}
           <div className="bg-white shadow-md rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-2">Diet Overview</h2>
             <p className="text-lg">
@@ -174,7 +245,15 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Recent Activities Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div className="bg-white shadow-md rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-2">Workout Progress</h2>
+            <div className="h-48">
+              <Bar data={workoutProgressData} options={workoutOptions} />
+            </div>
+          </div>
+        </div>
+
         <div className="bg-white shadow-md rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-2">Recent Activities</h2>
           <ul>

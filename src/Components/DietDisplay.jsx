@@ -20,21 +20,20 @@ const DietDisplay = () => {
   }
 
   useEffect(() => {
-    const userId = getUserIdFromJWT() // Get user ID from JWT
+    const userId = getUserIdFromJWT()
     if (!userId) {
       setError('Invalid token or user ID not found')
       setLoading(false)
-      return // Exit if userId is not valid
+      return
     }
 
     const fetchUserDiet = async () => {
       try {
-        // Fetch user's diet plan based on user ID
         const response = await axios.get(
           `http://127.0.0.1:3000/api/v1/dietplan/userdiet/${userId}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`, // Include JWT in headers
+              Authorization: `Bearer ${token}`,
             },
           }
         )
@@ -48,28 +47,28 @@ const DietDisplay = () => {
               `http://127.0.0.1:3000/api/v1/dietplan/${dietId}`,
               {
                 headers: {
-                  Authorization: `Bearer ${token}`, // Include JWT in headers
+                  Authorization: `Bearer ${token}`,
                 },
               }
             )
 
-            setDietPlan(dietResponse.data.data.dietPlan) // Set the fetched diet plan data
+            setDietPlan(dietResponse.data.data.dietPlan)
           } else {
             setError('No diet plan found for this user.')
           }
         }
       } catch (err) {
-        setError(err.response?.data?.message || err.message) // Set error message if the fetch fails
+        setError(err.response?.data?.message || err.message)
       } finally {
-        setLoading(false) // Set loading to false after fetching
+        setLoading(false)
       }
     }
 
     fetchUserDiet()
-  }, [token]) // Dependency array to fetch diet details when token changes
+  }, [token])
 
-  if (loading) return <p className="text-center text-lg">Loading...</p> // Show loading state
-  if (error) return <p className="text-red-500 text-center">Error: {error}</p> // Show error message
+  if (loading) return <p className="text-center text-lg">Loading...</p>
+  if (error) return <p className="text-red-500 text-center">Error: {error}</p>
 
   return (
     <div className="container mx-auto p-6">

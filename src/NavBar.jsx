@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom' // Import useNavigate for navigation
+import { Link, useNavigate, useLocation } from 'react-router-dom' // Import useLocation for current path
 import logo from './assets/logo.png'
 import user from './assets/user.png'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate() // Hook for navigation
+  const location = useLocation() // Hook for getting current location
 
   // Logout function
   const handleLogout = () => {
@@ -13,51 +14,61 @@ const Navbar = () => {
     navigate('/login') // Redirect to login page
   }
 
+  // Function to check if the current path matches the link path
+  const isActive = (path) => {
+    return location.pathname === path
+      ? 'text-indigo-500 border-indigo-500'
+      : 'text-gray-500 hover:text-gray-700 border-transparent'
+  }
+
   return (
     <nav className="bg-white shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
-            <div className="flex-shrink-0 inline-flex items-center ">
+            <div className="flex-shrink-0 inline-flex items-center">
               <Link to="/dashboard">
-                <img className="  h-8 w-8" src={logo} alt="Logo" />
+                <img className="h-8 w-8" src={logo} alt="Logo" />
               </Link>
             </div>
             <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
               <Link
                 to="/dashboard"
-                className="text-gray-900 inline-flex items-center px-1 pt-1  border-indigo-500 text-sm font-medium"
+                className={`text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${isActive(
+                  '/dashboard'
+                )}`}
               >
                 Dashboard
               </Link>
               <Link
                 to="/us"
-                className="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
+                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${isActive(
+                  '/us'
+                )}`}
               >
                 Schedules
               </Link>
               <Link
                 to="/usertracking"
-                className="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
+                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${isActive(
+                  '/usertracking'
+                )}`}
               >
                 User Trackings
               </Link>
-              {/* <Link
-                to="/settings"
-                className="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
-              >
-                Settings
-              </Link> */}
-
               <Link
                 to="/diet"
-                className="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
+                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${isActive(
+                  '/diet'
+                )}`}
               >
                 Diets
               </Link>
               <Link
                 to="/m"
-                className="text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium"
+                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${isActive(
+                  '/m'
+                )}`}
               >
                 Motivational Content
               </Link>
