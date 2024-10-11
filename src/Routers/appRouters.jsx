@@ -60,13 +60,13 @@ const AppRoutes = ({ saveData, alldata }) => {
       user &&
       userType !== 'Admin' &&
       [
-        '/ex',
-        '/dietplan',
-        '/usermanagement',
-        '/xx',
-        '/el',
-        '/sx',
-        'admin',
+        '/admin/ex',
+        '/admin/dietplan',
+        '/admin/usermanagement',
+        '/admin/xx',
+        '/admin/el',
+        '/admin/sx',
+        '/admin',
       ].includes(location.pathname)
     ) {
       navigate('/dashboard')
