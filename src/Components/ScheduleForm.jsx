@@ -16,7 +16,9 @@ const ScheduleForm = () => {
   useEffect(() => {
     const fetchExercises = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:3000/api/v1/exerc')
+        const response = await axios.get(
+          'http://fitzone-back-production.up.railway.app/api/v1/exerc'
+        )
         const exerciseOptions = response.data.data.exercises.map(
           (exercise) => ({
             value: exercise._id,
@@ -47,7 +49,7 @@ const ScheduleForm = () => {
 
     try {
       const response = await axios.post(
-        'http://127.0.0.1:3000/api/v1/schedule',
+        'http://fitzone-back-production.up.railway.app/api/v1/schedule',
         scheduleData,
         {
           headers: {

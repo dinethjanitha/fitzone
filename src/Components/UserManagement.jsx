@@ -16,11 +16,14 @@ const UserManagement = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:3000/api/v1/user', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
+        const response = await axios.get(
+          'http://fitzone-back-production.up.railway.app/api/v1/user',
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
         setUsers(response.data.data.users)
       } catch (err) {
         setError('Error fetching users')
@@ -35,11 +38,14 @@ const UserManagement = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://127.0.0.1:3000/api/v1/user/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      await axios.delete(
+        `http://fitzone-back-production.up.railway.app/api/v1/user/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       setUsers(users.filter((user) => user._id !== id))
     } catch (err) {
       setError('Error deleting user')
@@ -55,7 +61,7 @@ const UserManagement = () => {
     e.preventDefault() // Prevent default form submission
     try {
       await axios.patch(
-        `http://127.0.0.1:3000/api/v1/user/${selectedUser._id}`,
+        `http://fitzone-back-production.up.railway.app/api/v1/user/${selectedUser._id}`,
         selectedUser,
         {
           headers: {

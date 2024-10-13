@@ -39,7 +39,7 @@ const UserProfile = () => {
     const fetchUserDetails = async () => {
       try {
         const response = await axios.get(
-          `http://127.0.0.1:3000/api/v1/user/${userId}`,
+          `http://fitzone-back-production.up.railway.app/api/v1/user/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // Include JWT in headers
@@ -78,7 +78,7 @@ const UserProfile = () => {
 
     try {
       const response = await axios.patch(
-        `http://127.0.0.1:3000/api/v1/user/${userId}`, // Use PATCH to update user
+        `http://fitzone-back-production.up.railway.app/api/v1/user/${userId}`, // Use PATCH to update user
         formData,
         {
           headers: {

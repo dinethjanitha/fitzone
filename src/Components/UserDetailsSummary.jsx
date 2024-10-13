@@ -39,12 +39,16 @@ const UserDetailsSummary = ({ alldata }) => {
     const data = JSON.stringify(alldata)
 
     axios
-      .post('http://127.0.0.1:3000/api/v1/userdata/', data, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${jwtToken}`,
-        },
-      })
+      .post(
+        'http://fitzone-back-production.up.railway.app/api/v1/userdata/',
+        data,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      )
       .then((response) => {
         console.log(response)
 
@@ -63,17 +67,21 @@ const UserDetailsSummary = ({ alldata }) => {
             }
             const usersch = JSON.stringify(userid)
             axios
-              .post('http://127.0.0.1:3000/api/v1/workout', usersch, {
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${jwtToken}`,
-                },
-              })
+              .post(
+                'http://fitzone-back-production.up.railway.app/api/v1/workout',
+                usersch,
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${jwtToken}`,
+                  },
+                }
+              )
               .then((response) => {
                 console.log('success')
                 axios
                   .patch(
-                    `http://127.0.0.1:3000/api/v1/user/${alldata.userid}`,
+                    `http://fitzone-back-production.up.railway.app/api/v1/user/${alldata.userid}`,
                     usersch,
                     {
                       headers: {
@@ -107,7 +115,7 @@ const UserDetailsSummary = ({ alldata }) => {
 
             axios
               .post(
-                'http://127.0.0.1:3000/api/v1/dietplan/userdiet',
+                'http://fitzone-back-production.up.railway.app/api/v1/dietplan/userdiet',
                 userdietdata,
                 {
                   headers: {

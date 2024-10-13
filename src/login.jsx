@@ -17,7 +17,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        'http://127.0.0.1:3000/api/v1/user/signin',
+        'http://fitzone-back-production.up.railway.app/api/v1/user/signin',
         {
           email: email.trim(),
           password: password.trim(),
@@ -35,7 +35,7 @@ const Login = () => {
       const uid = getUserIdFromJWT()
 
       const userDetailsResponse = await axios.get(
-        `http://127.0.0.1:3000/api/v1/user/${uid}`,
+        `http://fitzone-back-production.up.railway.app/api/v1/user/${uid}`,
         {
           headers: { Authorization: `Bearer ${jwtToken}` },
         }

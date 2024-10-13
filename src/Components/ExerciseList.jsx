@@ -12,7 +12,9 @@ const ExerciseList = () => {
   useEffect(() => {
     const fetchExercises = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:3000/api/v1/exerc')
+        const response = await axios.get(
+          'http://fitzone-back-production.up.railway.app/api/v1/exerc'
+        )
         setExercises(response.data.data.exercises)
       } catch (error) {
         console.error('Failed to fetch exercises.', error)
@@ -33,7 +35,9 @@ const ExerciseList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://127.0.0.1:3000/api/v1/exerc/${id}`)
+      await axios.delete(
+        `http://fitzone-back-production.up.railway.app/api/v1/exerc/${id}`
+      )
       setExercises(exercises.filter((exercise) => exercise._id !== id))
     } catch (error) {
       console.error('Failed to delete exercise.', error)

@@ -22,7 +22,7 @@ const ExerciseEditForm = ({
 
     try {
       const response = await axios.patch(
-        `http://127.0.0.1:3000/api/v1/exerc/${exercise._id}`,
+        `http://fitzone-back-production.up.railway.app/api/v1/exerc/${exercise._id}`,
         updatedExercise
       )
       const updatedExerciseData = response.data.data.exercise

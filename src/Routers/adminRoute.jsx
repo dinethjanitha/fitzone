@@ -11,15 +11,10 @@ const AppRoutes = ({ saveData, alldata }) => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  // Other useEffect and code...
-
   return (
     <>
       {shouldShowNavbar && <Navbar />}
       <Routes>
-        {/* Other user routes */}
-
-        {/* Admin Dashboard Route */}
         <Route path="/admin" element={<AdminDashboard />}>
           <Route path="ex" element={<ExerciseForm />} />
           <Route path="dietplan" element={<DietPlanForm />} />

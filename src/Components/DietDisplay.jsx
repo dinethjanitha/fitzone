@@ -30,7 +30,7 @@ const DietDisplay = () => {
     const fetchUserDiet = async () => {
       try {
         const response = await axios.get(
-          `http://127.0.0.1:3000/api/v1/dietplan/userdiet/${userId}`,
+          `http://fitzone-back-production.up.railway.app/api/v1/dietplan/userdiet/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -44,7 +44,7 @@ const DietDisplay = () => {
           if (dietId) {
             // Fetch diet details using the diet ID
             const dietResponse = await axios.get(
-              `http://127.0.0.1:3000/api/v1/dietplan/${dietId}`,
+              `http://fitzone-back-production.up.railway.app/api/v1/dietplan/${dietId}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,

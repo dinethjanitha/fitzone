@@ -21,7 +21,7 @@ const UserSchedule = () => {
 
     try {
       const userScheduleResponse = await axios.get(
-        `http://127.0.0.1:3000/api/v1/workout/${userId}`,
+        `http://fitzone-back-production.up.railway.app/api/v1/workout/${userId}`,
         { headers: { Authorization: `Bearer ${jwtToken}` } }
       )
 
@@ -33,7 +33,7 @@ const UserSchedule = () => {
 
       const { scheduleid } = userSchedule
       const scheduleResponse = await axios.get(
-        `http://127.0.0.1:3000/api/v1/schedule/${scheduleid}`,
+        `http://fitzone-back-production.up.railway.app/api/v1/schedule/${scheduleid}`,
         { headers: { Authorization: `Bearer ${jwtToken}` } }
       )
       setSchedule(scheduleResponse.data.data.schedule)
@@ -41,7 +41,7 @@ const UserSchedule = () => {
       const exercisesData = await Promise.all(
         scheduleResponse.data.data.schedule.exercises.map(async (exercise) => {
           const exerciseResponse = await axios.get(
-            `http://127.0.0.1:3000/api/v1/exerc/${exercise.exerciseid}`,
+            `http://fitzone-back-production.up.railway.app/api/v1/exerc/${exercise.exerciseid}`,
             { headers: { Authorization: `Bearer ${jwtToken}` } }
           )
           return {
@@ -62,7 +62,7 @@ const UserSchedule = () => {
     try {
       const userId = getUserIdFromJWT()
       await axios.post(
-        'http://127.0.0.1:3000/api/v1/tracking',
+        'http://fitzone-back-production.up.railway.app/api/v1/tracking',
         { userid: userId, exerciseid: exerciseid },
         { headers: { Authorization: `Bearer ${jwtToken}` } }
       )
