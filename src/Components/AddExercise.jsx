@@ -19,7 +19,7 @@ const ExerciseForm = () => {
 
     try {
       const response = await axios.post(
-        'http://fitzone-back-production.up.railway.app/api/v1/exerc',
+        'https://fitzone-back-production.up.railway.app/api/v1/exerc',
         exerciseData,
         {
           headers: {

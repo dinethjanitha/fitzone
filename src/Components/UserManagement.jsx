@@ -17,7 +17,7 @@ const UserManagement = () => {
     const fetchUsers = async () => {
       try {
         const response = await axios.get(
-          'http://fitzone-back-production.up.railway.app/api/v1/user',
+          'https://fitzone-back-production.up.railway.app/api/v1/user',
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -39,7 +39,7 @@ const UserManagement = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `http://fitzone-back-production.up.railway.app/api/v1/user/${id}`,
+        `https://fitzone-back-production.up.railway.app/api/v1/user/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -61,7 +61,7 @@ const UserManagement = () => {
     e.preventDefault() // Prevent default form submission
     try {
       await axios.patch(
-        `http://fitzone-back-production.up.railway.app/api/v1/user/${selectedUser._id}`,
+        `https://fitzone-back-production.up.railway.app/api/v1/user/${selectedUser._id}`,
         selectedUser,
         {
           headers: {

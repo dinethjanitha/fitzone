@@ -18,11 +18,6 @@ const UserHome = () => {
       <Router>
         <AppRoutes saveData={saveData} alldata={userData} />
         {console.log(userData)}
-        {/* Display Collected Data
-      <div>
-        <h3>Collected Data:</h3>
-        <pre>{JSON.stringify(userData, null, 2)}</pre>
-      </div> */}
       </Router>
     </div>
   )

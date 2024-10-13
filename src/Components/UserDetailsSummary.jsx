@@ -40,7 +40,7 @@ const UserDetailsSummary = ({ alldata }) => {
 
     axios
       .post(
-        'http://fitzone-back-production.up.railway.app/api/v1/userdata/',
+        'https://fitzone-back-production.up.railway.app/api/v1/userdata/',
         data,
         {
           headers: {
@@ -68,7 +68,7 @@ const UserDetailsSummary = ({ alldata }) => {
             const usersch = JSON.stringify(userid)
             axios
               .post(
-                'http://fitzone-back-production.up.railway.app/api/v1/workout',
+                'https://fitzone-back-production.up.railway.app/api/v1/workout',
                 usersch,
                 {
                   headers: {
@@ -81,7 +81,7 @@ const UserDetailsSummary = ({ alldata }) => {
                 console.log('success')
                 axios
                   .patch(
-                    `http://fitzone-back-production.up.railway.app/api/v1/user/${alldata.userid}`,
+                    `https://fitzone-back-production.up.railway.app/api/v1/user/${alldata.userid}`,
                     usersch,
                     {
                       headers: {
@@ -115,7 +115,7 @@ const UserDetailsSummary = ({ alldata }) => {
 
             axios
               .post(
-                'http://fitzone-back-production.up.railway.app/api/v1/dietplan/userdiet',
+                'https://fitzone-back-production.up.railway.app/api/v1/dietplan/userdiet',
                 userdietdata,
                 {
                   headers: {

@@ -17,7 +17,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        'http://fitzone-back-production.up.railway.app/api/v1/user/signin',
+        'https://fitzone-back-production.up.railway.app/api/v1/user/signin',
         {
           email: email.trim(),
           password: password.trim(),
@@ -34,12 +34,9 @@ const Login = () => {
 
       const uid = getUserIdFromJWT()
 
-      const userDetailsResponse = await axios.get(
-        `http://fitzone-back-production.up.railway.app/api/v1/user/${uid}`,
-        {
-          headers: { Authorization: `Bearer ${jwtToken}` },
-        }
-      )
+      const userDetailsResponse = await axios.get(` `, {
+        headers: { Authorization: `Bearer ${jwtToken}` },
+      })
 
       const userDetails = userDetailsResponse.data.message.data
 

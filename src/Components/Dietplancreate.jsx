@@ -50,7 +50,7 @@ const DietPlanForm = () => {
 
     try {
       const response = await axios.post(
-        'http://fitzone-back-production.up.railway.app/api/v1/dietplan',
+        'https://fitzone-back-production.up.railway.app/api/v1/dietplan',
         dietPlanData
       )
       if (response.status === 201) {

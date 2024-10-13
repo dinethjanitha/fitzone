@@ -29,7 +29,7 @@ const UserTracking = () => {
     const userId = getUserIdFromJWT()
     try {
       const response = await axios.get(
-        `http://fitzone-back-production.up.railway.app/api/v1/tracking/${userId}`,
+        `https://fitzone-back-production.up.railway.app/api/v1/tracking/${userId}`,
         {
           headers: { Authorization: `Bearer ${jwtToken}` },
         }
@@ -45,7 +45,7 @@ const UserTracking = () => {
     try {
       const exercisePromises = exerciseIds.map((id) =>
         axios.get(
-          `http://fitzone-back-production.up.railway.app/api/v1/exerc/${id}`,
+          `https://fitzone-back-production.up.railway.app/api/v1/exerc/${id}`,
           {
             headers: { Authorization: `Bearer ${jwtToken}` },
           }

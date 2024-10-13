@@ -17,7 +17,7 @@ const ScheduleForm = () => {
     const fetchExercises = async () => {
       try {
         const response = await axios.get(
-          'http://fitzone-back-production.up.railway.app/api/v1/exerc'
+          'https://fitzone-back-production.up.railway.app/api/v1/exerc'
         )
         const exerciseOptions = response.data.data.exercises.map(
           (exercise) => ({
@@ -49,7 +49,7 @@ const ScheduleForm = () => {
 
     try {
       const response = await axios.post(
-        'http://fitzone-back-production.up.railway.app/api/v1/schedule',
+        'https://fitzone-back-production.up.railway.app/api/v1/schedule',
         scheduleData,
         {
           headers: {

@@ -13,7 +13,7 @@ const ExerciseList = () => {
     const fetchExercises = async () => {
       try {
         const response = await axios.get(
-          'http://fitzone-back-production.up.railway.app/api/v1/exerc'
+          'https://fitzone-back-production.up.railway.app/api/v1/exerc'
         )
         setExercises(response.data.data.exercises)
       } catch (error) {
@@ -36,7 +36,7 @@ const ExerciseList = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `http://fitzone-back-production.up.railway.app/api/v1/exerc/${id}`
+        `https://fitzone-back-production.up.railway.app/api/v1/exerc/${id}`
       )
       setExercises(exercises.filter((exercise) => exercise._id !== id))
     } catch (error) {

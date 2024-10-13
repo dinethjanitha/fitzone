@@ -20,7 +20,7 @@ const ScheduleManager = () => {
   const fetchSchedules = async () => {
     try {
       const response = await axios.get(
-        'http://fitzone-back-production.up.railway.app/api/v1/schedule'
+        'https://fitzone-back-production.up.railway.app/api/v1/schedule'
       )
       setSchedules(response.data.data.schedules)
     } catch (error) {
@@ -32,7 +32,7 @@ const ScheduleManager = () => {
   const fetchExercises = async () => {
     try {
       const response = await axios.get(
-        'http://fitzone-back-production.up.railway.app/api/v1/exerc'
+        'https://fitzone-back-production.up.railway.app/api/v1/exerc'
       )
       const exerciseOptions = response.data.data.exercises.map((exercise) => ({
         value: exercise._id,
@@ -79,7 +79,7 @@ const ScheduleManager = () => {
 
     try {
       await axios.patch(
-        `http://fitzone-back-production.up.railway.app/api/v1/schedule/${editingSchedule._id}`,
+        `https://fitzone-back-production.up.railway.app/api/v1/schedule/${editingSchedule._id}`,
         updatedSchedule
       )
       setMessage('Schedule updated successfully!')
@@ -96,7 +96,7 @@ const ScheduleManager = () => {
     if (window.confirm('Are you sure you want to delete this schedule?')) {
       try {
         await axios.delete(
-          `http://fitzone-back-production.up.railway.app/api/v1/schedule/${scheduleId}`
+          `https://fitzone-back-production.up.railway.app/api/v1/schedule/${scheduleId}`
         )
         setMessage('Schedule deleted successfully!')
         fetchSchedules() // Refresh schedules

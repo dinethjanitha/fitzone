@@ -80,7 +80,7 @@ const SignUp = () => {
     } else {
       try {
         const response = await axios.post(
-          'http://fitzone-back-production.up.railway.app/api/v1/user/signup',
+          'https://fitzone-back-production.up.railway.app/api/v1/user/signup',
           formData
         )
 
